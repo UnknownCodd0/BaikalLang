@@ -69,45 +69,49 @@ for i in file:
             globals()[j[1]] = Число(j[1], int(j[2]))
             j = []
 
-        elif j[0] == 'ОбъявДругое':
-            globals()[j[1]] = ОбъявитьДругое(j[1], j[2])
+
+
 
         elif j[0] == 'Функция':
-            if j[1] == "Вывести":
-                #ЕСЛИ КОД - СТРОКА
-                if '"' in j[2]:
-                    print(str(' '.join(j[2:]).strip('()""')))
+            def func(j):
+                if j[1] == "Вывести":
+                    #ЕСЛИ КОД - СТРОКА
+                    if '"' in j[2]:
+                        print(str(' '.join(j[2:]).strip('()""')))
 
-                #ЕСЛИ КОД - ЧИСЛО
-                elif j[2].strip('()').isnumeric():
-                    print(j[2].strip('()'))
+                    #ЕСЛИ КОД - ЧИСЛО
+                    elif j[2].strip('()').isnumeric():
+                        print(j[2].strip('()'))
 
-                #ЕСЛИ КОД - ПЕРЕМЕННАЯ
-                elif j[2].strip('()') in globals():
-                    print('why', globals()[j[2].strip('()')].value)
+                    #ЕСЛИ КОД - ПЕРЕМЕННАЯ
+                    elif j[2].strip('()') in globals():
+                        print(globals()[j[2].strip('()')].value)
 
-                #ЕСЛИ КОД - СПИСОК
-                elif '[' in j[2]:
-                    temp = ' '.join(j[2:]).strip('()')
-                    print(eval(temp))
-                    temp = None
+                    #ЕСЛИ КОД - СПИСОК
+                    elif '[' in j[2]:
+                        temp = ' '.join(j[2:]).strip('()')
+                        print(eval(temp))
+                        temp = None
 
-            elif j[1] == "Вид":
-                type_temp = type(eval(''.join(j[2:])))
+                elif j[1] == "Вид":
+                    def type_func(j):
+                        type_temp = type(eval(''.join(j[2:])))
 
-                def temp_func(arg):
-                    return arg
+                        def temp_func(arg):
+                            return arg
 
-                if type_temp == int:
-                    temp_func("Тип: Число")
+                        if type_temp == int:
+                            print("Тип: Число")
 
-                elif type_temp == list:
-                    temp_func("Тип: Список")
+                        elif type_temp == list:
+                            print("Тип: Список")
 
-                elif type_temp == str:
-                    temp_func("Тип: Строка")
+                        elif type_temp == str:
+                            print("Тип: Строка")
 
+                    type_func(j)
 
+            func(j)
 
 
 
