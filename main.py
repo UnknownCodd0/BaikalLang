@@ -127,9 +127,7 @@ for i in file:
                     type_func(j)
 
                 elif j[1] == 'Пока':
-                    print(j)
                     myvar = ' '.join(j[3:]).strip('[]')
-                    print(myvar)
                     while eval(j[2].strip('()')):
                             newln1 = []
 
