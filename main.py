@@ -61,13 +61,16 @@ for i in file:
         #print("i", i)
         if j[0] == 'Строка':
             declaration = ' '.join(j[2:])
-            #print("j[1]", j[1])
             globals()[j[1]] = Строка(j[1], declaration)
             #print(declaration)
             j = []
 
         elif j[0] == 'Число':
-            globals()[j[1]] = Число(j[1], int(j[2]))
+            if '+' in j[2]:
+                globals()[j[1]] = Число(j[1], eval((j[2])))
+            else:
+                globals()[j[1]] = Число(j[1], int(j[2]))
+
             j = []
 
         elif j[0] == 'Список':
@@ -137,12 +140,18 @@ for i in file:
 
 
                             newln1 = ''.join(newln1)
-                            newln1 = newln1.split()
+                            newln1 = newln1.split(', ')
 
                             #print(newln1)
 
-                            if newln1[0] == 'Функция':
-                                func(newln1)
+                            for kj in newln1:
+                                print(kj)
+                                if 'Функция' == kj[0]:
+                                    #print('newln1', newln1)
+                                    func(kj)
+
+                                elif 'Строка' == kj[0]:
+                                    pass
 
 
             func(j)

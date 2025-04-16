@@ -52,6 +52,66 @@ class Число:
     def __str__(self):
         return f"Переменная {self.name} со значением {self.value}"
 
+    def __eq__(self, other):
+        if isinstance(other, Число):
+            return self.value == other.value
+
+        elif isinstance(other, int):
+            return self.value == other
+
+        else:
+            raise ValueError
+
+    def __ne__(self, other):
+        if isinstance(other, Число):
+            return self.value != other.value
+
+        elif isinstance(other, int):
+            return self.value != other
+
+        else:
+            raise ValueError
+
+    def __lt__(self, other):
+        if isinstance(other, Число):
+            return self.value < other.value
+
+        elif isinstance(other, int):
+            return self.value < other
+
+        else:
+            raise ValueError
+
+    def __le__(self, other):
+        if isinstance(other, Число):
+            return self.value <= other.value
+
+        elif isinstance(other, int):
+            return self.value <= other
+
+        else:
+            raise ValueError
+
+    def __gt__(self, other):
+        if isinstance(other, Число):
+            return self.value > other.value
+
+        elif isinstance(other, int):
+            return self.value > other
+
+        else:
+            raise ValueError
+
+    def __ge__(self, other):
+        if isinstance(other, Число):
+            return self.value >= other.value
+
+        elif isinstance(other, int):
+            return self.value >= other
+
+        else:
+            raise ValueError
+
 class ОбъявитьДругое:
     def __init__(self, name, value):
         self.value = value
@@ -82,6 +142,17 @@ class Список:
 
     def Найти(self, arg):
         return self.value.find(arg)
+
+    def __eq__(self, other):
+        if isinstance(other, Строка):
+            return self.value == other.value
+
+        elif isinstance(other, str):
+            return self.value == other
+
+        else:
+            raise ValueError
+
 #
 # class Буль_Буль:
 #     def __init__(self, value):
