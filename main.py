@@ -1,6 +1,7 @@
 """
 ИНИЦИАЛИЗАЦИЯ
 """
+import pip
 
 #from Baikal_Lang_FP import *
 from Baikal_Lang_OOP import *
@@ -69,8 +70,19 @@ for i in file:
             globals()[j[1]] = Число(j[1], int(j[2]))
             j = []
 
+        elif j[0] == 'Список':
+            idk = ' '.join(j[2:])
+            globals()[j[1]] = Список(j[1], eval(' '.join(j[2:])))
 
+        elif j[0] == 'ОбъявитьДругое':
+            if j[2] == 'Вид':
+                tto = eval(j[3])
 
+                if type(tto) == int:
+                    globals()[j[1]] = "Тип: Число"
+
+                elif type(tto) == str:
+                    globals()[j[1]] = "Тип: Строка"
 
         elif j[0] == 'Функция':
             def func(j):
@@ -85,7 +97,10 @@ for i in file:
 
                     #ЕСЛИ КОД - ПЕРЕМЕННАЯ
                     elif j[2].strip('()') in globals():
-                        print(globals()[j[2].strip('()')].value)
+                        if isinstance(globals()[j[2].strip('()')], str):
+                            print(globals()[j[2].strip('()')])
+                        else:
+                            print(globals()[j[2].strip('()')].value)
 
                     #ЕСЛИ КОД - СПИСОК
                     elif '[' in j[2]:
@@ -95,26 +110,47 @@ for i in file:
 
                 elif j[1] == "Вид":
                     def type_func(j):
-                        type_temp = type(eval(''.join(j[2:])))
+                        type_temp = eval(''.join(j[2:]))
 
                         def temp_func(arg):
                             return arg
 
-                        if type_temp == int:
+                        if isinstance(type_temp, Число):
                             print("Тип: Число")
 
-                        elif type_temp == list:
+                        elif isinstance(type_temp, Список):
                             print("Тип: Список")
 
-                        elif type_temp == str:
+                        elif isinstance(type_temp, Строка):
                             print("Тип: Строка")
 
                     type_func(j)
 
             func(j)
 
+        elif j[0] == 'Если':
+            if eval(j[1].strip('()')):
+                a = ' '.join(j[2:]).strip('[]')
+                #print(a.split(', '))
+
+                for l in a.strip(']').split(', '):
+                    l = l.strip('[]')
+                    l = l.strip('()')
+
+                    newln = []
+
+                    for tmp in l:
+                        if not tmp in ['[', ']', '(', ')']:
+                            newln.append(l[l.find(tmp)])
+
+                    newln = ''.join(newln)
+                    newln = newln.split()
+
+                    if newln[0] == 'Функция':
+                        func(newln)
 
 
+file.close()
 #print(Hello)
 #print(Один)
 

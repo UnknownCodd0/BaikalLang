@@ -57,27 +57,28 @@ class ОбъявитьДругое:
 
 
 #
-# class Список:
-#     def __init__(self, value):
-#         self.value = value
-#
-#     def Сортировать(self, isreversed):
-#         if isreversed:
-#             return self.value.sort(reversed=True)
-#
-#         else:
-#             return sorted(self.value)
-#
-#     def Добавить(self, arg):
-#         self.value.append(arg)
-#         return self.value
-#
-#     def Удалить(self, arg):
-#         del self.value[arg]
-#         return self.value
-#
-#     def Найти(self, arg):
-#         return self.value.find(arg)
+class Список:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def Сортировать(self, isreversed):
+        if isreversed:
+            return self.value.sort(reversed=True)
+
+        else:
+            return sorted(self.value)
+
+    def Добавить(self, arg):
+        self.value.append(arg)
+        return self.value
+
+    def Удалить(self, arg):
+        del self.value[arg]
+        return self.value
+
+    def Найти(self, arg):
+        return self.value.find(arg)
 #
 # class Буль_Буль:
 #     def __init__(self, value):
