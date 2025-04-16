@@ -46,6 +46,9 @@ class Число:
     def Модуль(self):
         return abs(self.value)
 
+    def __add__(self, other):
+        return self.value + other.value
+
     def __str__(self):
         return f"Переменная {self.name} со значением {self.value}"
 

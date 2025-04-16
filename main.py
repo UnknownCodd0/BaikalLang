@@ -126,6 +126,27 @@ for i in file:
 
                     type_func(j)
 
+                elif j[1] == 'Пока':
+                    print(j)
+                    myvar = ' '.join(j[3:]).strip('[]')
+                    print(myvar)
+                    while eval(j[2].strip('()')):
+                            newln1 = []
+
+                            for tmp1 in myvar:
+                                if not tmp1 in ['[', ']', '(', ')']:
+                                    newln1.append(myvar[myvar.find(tmp1)])
+
+
+                            newln1 = ''.join(newln1)
+                            newln1 = newln1.split()
+
+                            #print(newln1)
+
+                            if newln1[0] == 'Функция':
+                                func(newln1)
+
+
             func(j)
 
         elif j[0] == 'Если':
@@ -148,6 +169,7 @@ for i in file:
 
                     if newln[0] == 'Функция':
                         func(newln)
+
 
 
 file.close()
