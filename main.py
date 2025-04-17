@@ -87,6 +87,10 @@ for i in file:
                 elif type(tto) == str:
                     globals()[j[1]] = "Тип: Строка"
 
+        elif j[0] == 'Переменная':
+            print(j)
+            globals()[j[1]] = eval(j[2])
+
         elif j[0] == 'Функция':
             def func(j):
                 if j[1] == "Вывести":
@@ -103,7 +107,10 @@ for i in file:
                         if isinstance(globals()[j[2].strip('()')], str):
                             print(globals()[j[2].strip('()')])
                         else:
-                            print(globals()[j[2].strip('()')].value)
+                            if isinstance(globals()[j[2].strip('()')], int):
+                                print(globals()[j[2].strip('()')])
+                            else:
+                                print(globals()[j[2].strip('()')].value)
 
                     #ЕСЛИ КОД - СПИСОК
                     elif '[' in j[2]:
@@ -145,13 +152,17 @@ for i in file:
                             #print(newln1)
 
                             for kj in newln1:
-                                print(kj)
-                                if 'Функция' == kj[0]:
+                                kj = kj.split()
+                                if 'Функция' in kj:
                                     #print('newln1', newln1)
                                     func(kj)
 
-                                elif 'Строка' == kj[0]:
+                                elif 'Строка' in kj:
                                     pass
+
+                                elif 'Переменная' in kj:
+                                    #print("TRIG EL PEREMENO", globals()[kj[1]])
+                                    globals()[kj[1]] = eval(kj[2])
 
 
             func(j)

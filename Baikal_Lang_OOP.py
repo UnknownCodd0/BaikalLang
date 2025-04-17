@@ -47,7 +47,14 @@ class Число:
         return abs(self.value)
 
     def __add__(self, other):
-        return self.value + other.value
+        if isinstance(other, Число):
+            return self.value + other.value
+
+        elif isinstance(other, int):
+            return self.value + other
+
+        else:
+            raise ValueError
 
     def __str__(self):
         return f"Переменная {self.name} со значением {self.value}"
