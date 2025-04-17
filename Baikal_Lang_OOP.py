@@ -151,14 +151,14 @@ class Список:
         return self.value.find(arg)
 
     def __eq__(self, other):
-        if isinstance(other, Строка):
+        if isinstance(other, Список):
             return self.value == other.value
 
-        elif isinstance(other, str):
+        elif isinstance(other, list):
             return self.value == other
 
         else:
-            raise ValueError
+            raise ValueError(f"Невозможно сравнение Списка с {type(other)}")
 
 #
 # class Буль_Буль:
