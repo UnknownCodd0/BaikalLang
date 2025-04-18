@@ -175,6 +175,9 @@ class ЛогТип:
         else:
             raise Exception(f"Неправильное значение переменной: {name} со значением {self.russian_value}. ЛогТип принимает значения: Правда; Ложь")
 
+    def __str__(self):
+        return self.factical_value
+
 
     def __eq__(self, other):
         if isinstance(other, bool):
