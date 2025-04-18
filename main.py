@@ -50,9 +50,11 @@ if_should_continue = False #Переменная, помогающая указ�
 since_last_if = 0 #Переменная, считающая строки с последнего if
 iselif = False #Переменная, проверяющая, находится ли
 
+#Резервирование системой значений 'Правда' и 'Ложь' как True и False
 globals()['Правда'] = True
 globals()['Ложь'] = False
 
+#Функция, отвечающая за методы Строки
 def Check_Stroka(argstr):
     if '.длина()' in argstr:
         return len(argstr[0:argstr.find('.длина()')])
@@ -63,12 +65,15 @@ def Check_Stroka(argstr):
     if '.малбуквы()' in argstr:
         return argstr[0:argstr.find('.загбуквы()')].lower()
 
+#Функция, отвечающая за методы числа
 def Check_Chislo(argnum) -> int:
     if '.модуль()' in argnum:
         return abs(int(argnum[0:argnum.find('.модуль()')]))
 
     if '.двоичное()' in argnum:
         bin(int(argnum[0:argnum.find('.двоичное()')]))
+
+#Функция, отвечающая за методы списка
 
 def Check_Spisok(arglist) -> list:
     if '.сортировать()' in arglist and arglist.find('.сортировать()') > arglist.find(']'):
@@ -187,14 +192,23 @@ for i in file:
 
                     #ЕСЛИ КОД - ПЕРЕМЕННАЯ
                     elif j[2].strip('()') in globals():
-                        if isinstance(globals()[j[2].strip('()')], str):
-                            print(globals()[j[2].strip('()')])
+                        if isinstance(globals()[j[2].strip('()')], bool):
+                            if globals()[j[2].strip('()')]:
+                                print("Правда")
+                            else:
+                                print("Ложь")
                         else:
+
                             if isinstance(globals()[j[2].strip('()')], int):
                                 print(globals()[j[2].strip('()')])
+
                             elif isinstance(globals()[j[2].strip('()')], Список):
                                 print(globals()[j[2].strip('()')].value)
+
                             elif isinstance(globals()[j[2].strip('()')], list):
+                                print(globals()[j[2].strip('()')])
+
+                            elif isinstance(globals()[j[2].strip('()')], str):
                                 print(globals()[j[2].strip('()')])
 
                     #ЕСЛИ КОД - СПИСОК
