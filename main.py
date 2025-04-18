@@ -56,29 +56,36 @@ globals()['Ложь'] = False
 
 #Функция, отвечающая за методы Строки
 def Check_Stroka(argstr):
+    # Метод .длина()    (len())
     if '.длина()' in argstr:
         return len(argstr[0:argstr.find('.длина()')])
 
+    # Метод .загбуквы()    (.upper())
     if '.загбуквы()' in argstr:
         return argstr[0:argstr.find('.загбуквы()')].upper()
 
+    # Метод .малбуквы()    (.lower())
     if '.малбуквы()' in argstr:
         return argstr[0:argstr.find('.загбуквы()')].lower()
 
 #Функция, отвечающая за методы числа
 def Check_Chislo(argnum) -> int:
+    # Метод .модуль()    (abs())
     if '.модуль()' in argnum:
         return abs(int(argnum[0:argnum.find('.модуль()')]))
 
+    # Метод .двоичное()    (.двоичное())
     if '.двоичное()' in argnum:
         bin(int(argnum[0:argnum.find('.двоичное()')]))
 
 #Функция, отвечающая за методы списка
 
 def Check_Spisok(arglist) -> list:
+    #Метод .сортировать()   (.sort())
     if '.сортировать()' in arglist and arglist.find('.сортировать()') > arglist.find(']'):
         return sorted(eval(arglist[0:arglist.find('.сортировать()')]))
 
+    #Метод .добавить()    (.append())
     if '.добавить(' in arglist and arglist.find('.добавить(') > arglist.find(']'):
         temp1 = eval(arglist[0:arglist.find('.добавить(')])
         temp1.append(eval(arglist[(arglist.find('.добавить(') + 10):-1]))
@@ -147,6 +154,7 @@ for i in file:
             else:
                 globals()[j[1]] = Список(j[1], eval(' '.join(j[2:])))
 
+        #Объявление переменной типа ЛогТип (bool)
         elif j[0] == 'ЛогТип':
             globals()[j[1]] = ЛогТип(j[1], j[2])
 
@@ -295,10 +303,14 @@ for i in file:
 
         #Оператор Если
         elif j[0] == 'Если':
+
+            #Проверка условия в скобках
             if eval(j[1].strip('()')):
+                #Обозначает, стоит ли выполнять последующие циклы elif/else
                 if_should_continue = False
                 a = ' '.join(j[2:]).strip('[]')
 
+                #Перебор значений и вызов указаных функций
                 for l in a.strip(']').split(', '):
                     l = l.strip('[]')
                     l = l.strip('()')
@@ -325,6 +337,7 @@ for i in file:
                 check_elif_else = False
                 since_last_if = 0
 
+            # Если в строке кода имеется ;Конец, то следующие if/else не перебираются
             if ';Конец' in j:
                 if_should_continue = False
                 check_elif_else = False
@@ -334,17 +347,17 @@ for i in file:
         #Оператор ИЛИ (elif)
         elif j[0] == 'Или':
             if check_elif_else:
+                # Проверка условия в скобках
                 if eval(j[1].strip('()')):
+                    # Обозначает, стоит ли выполнять последующие циклы elif/else
                     check_elif_else = False
                     if_should_continue = False
                     iselif = False
                     since_last_if = 0
 
-
-
                     a = ' '.join(j[2:]).strip('[]')
 
-
+                    # Перебор значений и вызов указаных функций
                     for l in a.strip(']').split(', '):
                         l = l.strip('[]')
                         l = l.strip('()')
@@ -362,6 +375,7 @@ for i in file:
                             func(newln)
 
                 else:
+                    # Если в строке кода имеется ;Конец, то следующие if/else не перебираются
                     if ';Конец' in j:
                         if_should_continue = False
                         check_elif_else = False
@@ -378,6 +392,7 @@ for i in file:
         #Оператор ИНАЧЕ (else)
         elif j[0] == "Иначе":
             if check_elif_else:
+                # Обозначает, стоит ли выполнять последующие циклы elif/else
                 check_elif_else = False
                 if_should_continue = False
                 iselif = False
@@ -403,8 +418,7 @@ for i in file:
             else:
                 raise Exception("Блок Иначе без Если")
 
-
-        #Вывод генерация ошибки если неправильно введена команда
+        #Генерация ошибки, если неправильно введена команда
         else:
             raise Exception("Неправильно введенная команда")
 
