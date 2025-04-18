@@ -54,11 +54,29 @@ def Check_Stroka(argstr):
     if '.длина()' in argstr:
         return len(argstr[0:argstr.find('.длина()')])
 
-    elif '.загбуквы()' in argstr:
+    if '.загбуквы()' in argstr:
         return argstr[0:argstr.find('.загбуквы()')].upper()
 
-    elif '.малбуквы()' in argstr:
+    if '.малбуквы()' in argstr:
         return argstr[0:argstr.find('.загбуквы()')].lower()
+
+def Check_Chislo(argnum) -> int:
+    if '.модуль()' in argnum:
+        return abs(int(argnum[0:argnum.find('.модуль()')]))
+
+    if '.двоичное()' in argnum:
+        bin(int(argnum[0:argnum.find('.двоичное()')]))
+
+def Check_Spisok(arglist) -> list:
+    if '.сортировать()' in arglist and arglist.find('.сортировать()') > arglist.find(']'):
+        return sorted(eval(arglist[0:arglist.find('.сортировать()')]))
+
+    if '.добавить(' in arglist and arglist.find('.добавить(') > arglist.find(']'):
+        temp1 = eval(arglist[0:arglist.find('.добавить(')])
+        temp1.append(eval(arglist[(arglist.find('.добавить(') + 10):-1]))
+        return temp1
+
+
 
 #----ЧТЕНИЕ ФАЙЛА
 for i in file:
@@ -99,13 +117,27 @@ for i in file:
 
         #Объявление переменной типа Число
         elif j[0] == 'Число':
-            globals()[j[1]] = Число(j[1], eval((j[2])))
+
+            temp = Check_Stroka(j[2])
+
+            if temp != None:
+                globals()[j[1]] = temp
+
+            else:
+                globals()[j[1]] = Число(j[1], eval((j[2])))
             j = []
 
         #Объявление переменной типа Список
         elif j[0] == 'Список':
             idk = ' '.join(j[2:])
-            globals()[j[1]] = Список(j[1], eval(' '.join(j[2:])))
+
+            temp = Check_Spisok(idk)
+
+            if temp != None:
+                globals()[j[1]] = temp
+
+            else:
+                globals()[j[1]] = Список(j[1], eval(' '.join(j[2:])))
 
         #Объявление переменной, имеющий значения результата Функции
         elif j[0] == 'ОбъявитьДругое':
@@ -154,8 +186,10 @@ for i in file:
                         else:
                             if isinstance(globals()[j[2].strip('()')], int):
                                 print(globals()[j[2].strip('()')])
-                            else:
+                            elif isinstance(globals()[j[2].strip('()')], Список):
                                 print(globals()[j[2].strip('()')].value)
+                            elif isinstance(globals()[j[2].strip('()')], list):
+                                print(globals()[j[2].strip('()')])
 
                     #ЕСЛИ КОД - СПИСОК
                     elif '[' in j[2]:
