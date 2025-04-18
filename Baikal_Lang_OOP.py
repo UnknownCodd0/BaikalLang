@@ -1,14 +1,3 @@
-class Runner:
-    def __init__(self, value):
-        self.value = value
-    def run(self):
-        pass
-
-file = open(r"C:\Users\Tagir\Desktop\code.txt")
-
-#for i in file:
-    #print(file.readline())
-
 class Строка:
     def __init__(self, name, value):
         self.value = value
