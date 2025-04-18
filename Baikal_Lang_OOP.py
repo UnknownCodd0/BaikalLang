@@ -161,10 +161,29 @@ class Список:
             raise ValueError(f"Невозможно сравнение Списка с {type(other)}")
 
 #
-# class Буль_Буль:
-#     def __init__(self, value):
-#         self.value = value
-#
+class ЛогТип:
+    def __init__(self, name, russian_value):
+        self.name = name
+        self.russian_value = russian_value
+
+        if self.russian_value == "Правда":
+            self.factical_value = True
+
+        elif self.russian_value == "Ложь":
+            self.factical_value = False
+
+        else:
+            raise Exception(f"Неправильное значение переменной: {name} со значением {self.russian_value}. ЛогТип принимает значения: Правда; Ложь")
+
+
+    def __eq__(self, other):
+        if isinstance(other, bool):
+            return self.factical_value == other
+
+        elif isinstance(other, ЛогТип):
+            return self.factical_value == other.factical_value
+
+
 class Функции:
     @staticmethod
     def Вывести(arg):
