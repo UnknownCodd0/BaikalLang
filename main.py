@@ -59,12 +59,12 @@ for i in file:
         if check_elif_else and not iselif:
             since_last_if += 1
 
-        if j[0] != "Если" and j[0] != "Или":
+        if j[0] != "Если" and j[0] != "Или" and j[0] != "Иначе":
             if since_last_if == 1:
                 check_elif_else = False
                 if_should_continue = False
                 since_last_if = 0
-                raise Exception("Неправильный синтаксис. Вы ввели другой код между блоками Если-Или")
+                raise Exception("Неправильный синтаксис. Вы ввели другой код между блоками Если-Или-Иначе")
 
 
 
@@ -247,6 +247,13 @@ for i in file:
                 check_elif_else = False
                 since_last_if = 0
 
+            if ';Конец' in j:
+                if_should_continue = False
+                check_elif_else = False
+                since_last_if = 0
+
+
+        #Оператор ИЛИ (elif)
         elif j[0] == 'Или':
             if check_elif_else:
                 if eval(j[1].strip('()')):
@@ -254,7 +261,11 @@ for i in file:
                     if_should_continue = False
                     iselif = False
                     since_last_if = 0
+
+
+
                     a = ' '.join(j[2:]).strip('[]')
+
 
                     for l in a.strip(']').split(', '):
                         l = l.strip('[]')
@@ -273,11 +284,46 @@ for i in file:
                             func(newln)
 
                 else:
-                    if_should_continue = True
-                    check_elif_else = True
-                    iselif = True
+                    if ';Конец' in j:
+                        if_should_continue = False
+                        check_elif_else = False
+                        iselif = False
+                        since_last_if = 0
+
+                    else:
+                        if_should_continue = True
+                        check_elif_else = True
+                        iselif = True
             else:
                 raise Exception("Блок Или без Если")
+
+        #Оператор ИНАЧЕ (else)
+        elif j[0] == "Иначе":
+            if check_elif_else:
+                check_elif_else = False
+                if_should_continue = False
+                iselif = False
+                since_last_if = 0
+                a = ' '.join(j[1:]).strip('[]')
+
+                for l in a.strip(']').split(', '):
+                    l = l.strip('[]')
+                    l = l.strip('()')
+
+                    newln = []
+
+                    for tmp in l:
+                        if not tmp in ['[', ']', '(', ')']:
+                            newln.append(l[l.find(tmp)])
+
+                    newln = ''.join(newln)
+                    newln = newln.split()
+
+                    if newln[0] == 'Функция':
+                        func(newln)
+
+            else:
+                raise Exception("Блок Иначе без Если")
 
         else:
             raise Exception("Неправильно введенная команда")
