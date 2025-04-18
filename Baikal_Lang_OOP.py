@@ -173,36 +173,7 @@ class Функции:
         else:
             print(arg)
 
-    #@staticmethod
-
-
-    #@staticmethod
-    #def ВывестиПеременную(var):
-        #print(var)
-
     @staticmethod
     def Вид(arg):
         return type(arg)
 
-    @staticmethod
-    def Код_Змей(arg):
-        eval(arg)
-
-    @staticmethod
-    def Если(att1, cond, att2, *args):
-        if cond == "==":
-            print("FFF")
-            if att1 == att2:
-                for i in range(0, len(args), 2):
-                    args[i](args[i + 1])
-
-            else:
-                return
-
-        elif cond == "~=":
-            if att1 != att2:
-                for i in range(0, len(args), 2):
-                    args[i](args[i + 1])
-
-            else:
-                return
