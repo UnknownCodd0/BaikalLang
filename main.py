@@ -1,9 +1,7 @@
 """
 ИНИЦИАЛИЗАЦИЯ
 """
-import pip
 
-#from Baikal_Lang_FP import *
 from Baikal_Lang_OOP import *
 
 # def функция(name):
@@ -45,16 +43,29 @@ from Baikal_Lang_OOP import *
 
 #inp = input()
 file = open(r"C:\Users\Tagir\Desktop\code.txt", encoding="UTF-8")
+#file = open(r"C:\Users\Tagir\Desktop\baikal.bkln", encoding="UTF-8")
 #file = open(inp, encoding="UTF-8")
 check_elif_else = False #Переменная, необходимая для обработки elif/else
 if_should_continue = False #Переменная, помогающая указать значение check_elif_else
 since_last_if = 0 #Переменная, считающая строки с последнего if
+iselif = False #Переменная, проверяющая, находится ли
 
 #----ЧТЕНИЕ ФАЙЛА
 for i in file:
     #ПРОВЕРКА НА ПУСТОТУ СТРОКИ
     if i != '\n':
         j = i.split()
+
+        if check_elif_else and not iselif:
+            since_last_if += 1
+
+        if j[0] != "Если" and j[0] != "Или":
+            if since_last_if == 1:
+                check_elif_else = False
+                if_should_continue = False
+                since_last_if = 0
+                raise Exception("Неправильный синтаксис. Вы ввели другой код между блоками Если-Или")
+
 
 
         #Удаление Комментариев из кода
@@ -98,7 +109,6 @@ for i in file:
         # Перезапись переменнойй, возможность совершить с ней действия типа <a = a + 1>
 
         elif j[0] == 'Переменная':
-            print(j)
             globals()[j[1]] = eval(j[2])
 
         elif j[0] == 'Функция':
@@ -210,7 +220,6 @@ for i in file:
             if eval(j[1].strip('()')):
                 if_should_continue = False
                 a = ' '.join(j[2:]).strip('[]')
-                #print(a.split(', '))
 
                 for l in a.strip(']').split(', '):
                     l = l.strip('[]')
@@ -236,8 +245,42 @@ for i in file:
 
             else:
                 check_elif_else = False
+                since_last_if = 0
 
-            print()
+        elif j[0] == 'Или':
+            if check_elif_else:
+                if eval(j[1].strip('()')):
+                    check_elif_else = False
+                    if_should_continue = False
+                    iselif = False
+                    since_last_if = 0
+                    a = ' '.join(j[2:]).strip('[]')
+
+                    for l in a.strip(']').split(', '):
+                        l = l.strip('[]')
+                        l = l.strip('()')
+
+                        newln = []
+
+                        for tmp in l:
+                            if not tmp in ['[', ']', '(', ')']:
+                                newln.append(l[l.find(tmp)])
+
+                        newln = ''.join(newln)
+                        newln = newln.split()
+
+                        if newln[0] == 'Функция':
+                            func(newln)
+
+                else:
+                    if_should_continue = True
+                    check_elif_else = True
+                    iselif = True
+            else:
+                raise Exception("Блок Или без Если")
+
+        else:
+            raise Exception("Неправильно введенная команда")
 
 
 
