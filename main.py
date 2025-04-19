@@ -243,12 +243,9 @@ for i in file:
                     def CreateFunc(*names):
                         def _f(*args):
                             for i in range(len(names)):
-                                #print('ni', names[i])
                                 globals()[names[i].strip('()')] = args[i]
 
-                            print('f', nwarg[1:])
-
-                            for l in nwarg[1:]: #nwarg[1].strip(']').split(', '):
+                            for l in nwarg[1:]:
                                 l = l.strip('[]')
                                 l = l.strip('()')
 
@@ -261,9 +258,6 @@ for i in file:
                                 newln = ''.join(newln)
                                 newln = newln.split()
 
-                                #print(newln)
-
-                                #print(newln)
 
                                 if newln[0] == 'Функция':
                                     newln[2] = newln[2].strip(',')
@@ -274,9 +268,7 @@ for i in file:
                                     return newln[1]
 
                         globals()[j[2]] = _f
-                        #print(globals())
                         del _f
-                        мояфункция('Привет')
 
                     CreateFunc(nwarg[0])
                     #мояфункция("Привет")
@@ -295,12 +287,10 @@ for i in file:
                             newln1 = ''.join(newln1)
                             newln1 = newln1.split(', ')
 
-                            #print(newln1)
 
                             for kj in newln1:
                                 kj = kj.split()
                                 if 'Функция' in kj:
-                                    #print('newln1', newln1)
                                     func(kj)
 
                                 elif 'Строка' in kj:
@@ -453,6 +443,10 @@ for i in file:
 
             else:
                 raise Exception("Блок Иначе без Если")
+
+        elif j[0] == 'ВызватьФункцию':
+            globals()[j[1]](eval(' '.join(j[2:]).strip('()')))
+
 
         #Генерация ошибки, если неправильно введена команда
         else:
