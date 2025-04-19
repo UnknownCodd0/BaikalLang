@@ -19,17 +19,7 @@ from Baikal_Lang_OOP import *
 #     globals()[name] = _f
 #     del _f
 
-# def Создать_Функцию(name):
-#     def _f(*newargs):
-#         co = 0
-#         for i in range(0, len(newargs), 2):
-#             if newargs[i] == "вернуть":
-#                 return newargs[i + 1]
-#             newargs[i](newargs[i + 1])
-#             co += 2
-#
-#     globals()[name] = _f
-#     del _f
+
 
 
 
@@ -244,6 +234,52 @@ for i in file:
                             print("Тип: Строка")
 
                     type_func(j)
+
+                #Создание Функции  (def)
+                elif j[1] == "СоздатьФункцию":
+                    nwarg = ' '.join(j[3:])
+                    nwarg = nwarg.split(" [")
+
+                    def CreateFunc(*names):
+                        def _f(*args):
+                            for i in range(len(names)):
+                                #print('ni', names[i])
+                                globals()[names[i].strip('()')] = args[i]
+
+                            print('f', nwarg[1:])
+
+                            for l in nwarg[1:]: #nwarg[1].strip(']').split(', '):
+                                l = l.strip('[]')
+                                l = l.strip('()')
+
+                                newln = []
+
+                                for tmp in l:
+                                    if not tmp in ['[', ']', '(', ')']:
+                                        newln.append(l[l.find(tmp)])
+
+                                newln = ''.join(newln)
+                                newln = newln.split()
+
+                                #print(newln)
+
+                                #print(newln)
+
+                                if newln[0] == 'Функция':
+                                    newln[2] = newln[2].strip(',')
+
+                                    func(newln)
+
+                                elif newln[0] == 'вернуть':
+                                    return newln[1]
+
+                        globals()[j[2]] = _f
+                        #print(globals())
+                        del _f
+                        мояфункция('Привет')
+
+                    CreateFunc(nwarg[0])
+                    #мояфункция("Привет")
 
                 #Цикл Пока (while)
                 elif j[1] == 'Пока':
