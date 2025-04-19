@@ -176,15 +176,5 @@ class ЛогТип:
             return self.factical_value == other.factical_value
 
 
-class Функции:
-    @staticmethod
-    def Вывести(arg):
-        if arg in globals():
-            print(globals()[arg].get_value())
-        else:
-            print(arg)
 
-    @staticmethod
-    def Вид(arg):
-        return type(arg)
 

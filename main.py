@@ -1,44 +1,23 @@
-"""
-ИНИЦИАЛИЗАЦИЯ
-"""
-
+#Импрорт классов (типов данных)
 from Baikal_Lang_OOP import *
 
-# def функция(name):
-#     def _f(*newargs):
-#         co = 0
-#         for i in range(0, len(newargs), 2):
-#             if newargs[i] == "вернуть":
-#                 return newargs[i + 1]
-#             newargs[i](newargs[i+1])
-#             co += 2
-#
-#
-#
-#
-#     globals()[name] = _f
-#     del _f
 
+#Переменная, считывающая входные данные - директорию файла
+inp = input()
 
+#Проверка расширения файла
+check = inp.split('.')
 
+if check[1] != 'bkln':
+    raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
 
+#Переменная, открывающая файл
+file = open(inp, encoding="UTF-8")
 
-
-
-
-
-"""
-КОД
-"""
-
-#inp = input()
-file = open(r"C:\Users\Tagir\Desktop\code.txt", encoding="UTF-8")
-#file = open(r"C:\Users\Tagir\Desktop\baikal.bkln", encoding="UTF-8")
-#file = open(inp, encoding="UTF-8")
 check_elif_else = False #Переменная, необходимая для обработки elif/else
 if_should_continue = False #Переменная, помогающая указать значение check_elif_else
 since_last_if = 0 #Переменная, считающая строки с последнего if
-iselif = False #Переменная, проверяющая, находится ли
+iselif = False #Переменная, проверяющая, находится ли код на ветке если/или/иначе
 
 #Резервирование системой значений 'Правда' и 'Ложь' как True и False
 globals()['Правда'] = True
