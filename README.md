@@ -1,8 +1,6 @@
 ## BaikalLang ##
 
-![unnamed](https://github.com/user-attachments/assets/039213d2-96a6-493e-a6db-b08dc8879ab4)
-
-
+![baikal](https://github.com/user-attachments/assets/b4dbf00b-7a54-4b90-8f97-0c4fc09667a2)
 
 
 
