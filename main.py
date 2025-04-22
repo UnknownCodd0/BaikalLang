@@ -3,23 +3,24 @@ from Baikal_Lang_OOP import *
 
 
 #Переменная, считывающая входные данные - директорию файла
-inp = input()
-
-#Проверка расширения файла
-check = inp.split('.')
-try:
-    if check[1] != 'bkln':
-        raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
-
-except Exception:
-    raise Exception("Введена неправильная директория!")
-
-#Открытие файла, создание ошибки, если директории не существует
-try:
-    file = open(inp, encoding="UTF-8")
-
-except FileNotFoundError:
-    raise Exception("Введена неправильная директория!")
+# inp = input()
+#
+# #Проверка расширения файла
+# check = inp.split('.')
+# try:
+#     if check[1] != 'bkln':
+#         raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
+#
+# except Exception:
+#     raise Exception("Введена неправильная директория!")
+#
+# #Открытие файла, создание ошибки, если директории не существует
+# try:
+#     file = open(inp, encoding="UTF-8")
+#
+# except FileNotFoundError:
+#     raise Exception("Введена неправильная директория!")
+file = open(r"C:\Users\Tagir\Desktop\baikal.bkln", encoding="UTF-8")
 
 check_elif_else = False #Переменная, необходимая для обработки elif/else
 if_should_continue = False #Переменная, помогающая указать значение check_elif_else
@@ -97,6 +98,7 @@ for i in file:
         if j[0] == 'Строка':
             declaration = ' '.join(j[2:])
 
+
             temp = Check_Stroka(declaration)
 
             if temp != None:
@@ -105,6 +107,7 @@ for i in file:
             else:
                 globals()[j[1]] = Строка(j[1], eval(declaration))
             j = []
+
 
         #Объявление переменной типа Число
         elif j[0] == 'Число':
@@ -178,8 +181,8 @@ for i in file:
                 else:
                     if j[1] == "Вывести":
                         #ЕСЛИ КОД - СТРОКА
-                        if '"' in j[2]:
 
+                        if '"' in j[2]:
                             #Защита от удаления всех скобок, даже тех, которые отвечают за методы
                             if j[-1][-1][-1] == ')':
                                 j[-1] = j[-1][:-1]
@@ -205,7 +208,6 @@ for i in file:
                                 else:
                                     print("Ложь")
                             else:
-
                                 if isinstance(globals()[j[2].strip('()')], int):
                                     print(globals()[j[2].strip('()')])
 
@@ -218,11 +220,46 @@ for i in file:
                                 elif isinstance(globals()[j[2].strip('()')], str):
                                     print(globals()[j[2].strip('()')])
 
+                                elif isinstance(globals()[j[2].strip('()')], Строка):
+                                    print(globals()[j[2].strip('()')].value)
+
+                                elif isinstance(globals()[j[2].strip('()')], Число):
+                                    print(globals()[j[2].strip('()')].value)
+
+
+
+
                         #ЕСЛИ КОД - СПИСОК
                         elif '[' in j[2]:
                             temp = ' '.join(j[2:]).strip('()')
                             print(eval(temp))
                             temp = None
+
+                        elif ',' in j[2] and not '"' in j[2]:
+                            for myvar in j[2:]:
+                                if isinstance(globals()[j[2].strip(',()')], bool):
+                                    print(globals()[myvar.strip(',()')])
+
+                                elif isinstance(globals()[j[2].strip(',()')], int):
+                                    print(globals()[myvar.strip(',()')])
+
+                                elif isinstance(globals()[j[2].strip(',()')], Список):
+                                    print(globals()[myvar.strip(',()')].value)
+
+                                elif isinstance(globals()[j[2].strip(',()')], list):
+                                    print(globals()[myvar.strip(',()')])
+
+                                elif isinstance(globals()[j[2].strip(',()')], str):
+                                    print(globals()[myvar.strip(',()')])
+
+                                elif isinstance(globals()[j[2].strip(',()')], Строка):
+                                    print(globals()[myvar.strip(',()')].value)
+
+                                elif isinstance(globals()[j[2].strip(',()')], Число):
+                                    print(globals()[myvar.strip(',()')].value)
+
+
+
 
 
                     #Функция вид (type, но не метакласс)
