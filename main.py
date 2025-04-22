@@ -6,7 +6,6 @@ from Baikal_Lang_OOP import *
 inp = input()
 
 #Проверка расширения файла
-
 check = inp.split('.')
 try:
     if check[1] != 'bkln':
@@ -15,8 +14,12 @@ try:
 except Exception:
     raise Exception("Введена неправильная директория!")
 
-#Переменная, открывающая файл
-file = open(inp, encoding="UTF-8")
+#Открытие файла, создание ошибки, если директории не существует
+try:
+    file = open(inp, encoding="UTF-8")
+
+except FileNotFoundError:
+    raise Exception("Введена неправильная директория!")
 
 check_elif_else = False #Переменная, необходимая для обработки elif/else
 if_should_continue = False #Переменная, помогающая указать значение check_elif_else
