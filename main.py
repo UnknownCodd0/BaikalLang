@@ -3,24 +3,24 @@ from Baikal_Lang_OOP import *
 
 
 #Переменная, считывающая входные данные - директорию файла
-# inp = input()
-#
-# #Проверка расширения файла
-# check = inp.split('.')
-# try:
-#     if check[1] != 'bkln':
-#         raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
-#
-# except Exception:
-#     raise Exception("Введена неправильная директория!")
-#
-# #Открытие файла, создание ошибки, если директории не существует
-# try:
-#     file = open(inp, encoding="UTF-8")
-#
-# except FileNotFoundError:
-#     raise Exception("Введена неправильная директория!")
-file = open(r"C:\Users\Tagir\Desktop\baikal.bkln", encoding="UTF-8")
+inp = input()
+
+#Проверка расширения файла
+check = inp.split('.')
+try:
+    if check[1] != 'bkln':
+        raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
+
+except Exception:
+    raise Exception("Введена неправильная директория!")
+
+#Открытие файла, создание ошибки, если директории не существует
+try:
+    file = open(inp, encoding="UTF-8")
+
+except FileNotFoundError:
+    raise Exception("Введена неправильная директория!")
+
 
 check_elif_else = False #Переменная, необходимая для обработки elif/else
 if_should_continue = False #Переменная, помогающая указать значение check_elif_else
