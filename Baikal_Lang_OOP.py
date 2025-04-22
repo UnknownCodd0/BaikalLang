@@ -1,3 +1,4 @@
+#Тип данных Строка
 class Строка:
     def __init__(self, name, value):
         self.value = value
@@ -23,7 +24,8 @@ class Строка:
 
     def __str__(self):
         return f"Переменная {self.name} со значением {self.value}"
-#
+
+#Тип данных Число
 class Число:
     def __init__(self, name, value):
         self.value = value
@@ -115,7 +117,7 @@ class ОбъявитьДругое:
 
 
 
-#
+#Тип данных Список
 class Список:
     def __init__(self, name, value):
         self.name = name
@@ -149,7 +151,7 @@ class Список:
         else:
             raise ValueError(f"Невозможно сравнение Списка с {type(other)}")
 
-#
+#Тип данных ЛогТип (bool)
 class ЛогТип:
     def __init__(self, name, russian_value):
         self.name = name
