@@ -226,15 +226,13 @@ for i in file:
                                 elif isinstance(globals()[j[2].strip('()')], Число):
                                     print(globals()[j[2].strip('()')].value)
 
-
-
-
                         #ЕСЛИ КОД - СПИСОК
                         elif '[' in j[2]:
                             temp = ' '.join(j[2:]).strip('()')
                             print(eval(temp))
                             temp = None
 
+                        #ЕСЛИ ПЕРЕДАНО НЕСКОЛЬКО АРГУМЕНТОВ
                         elif ',' in j[2] and not '"' in j[2]:
                             for myvar in j[2:]:
                                 if isinstance(globals()[j[2].strip(',()')], bool):
@@ -498,9 +496,11 @@ for i in file:
                     if newln[0] == 'Функция':
                         func(newln, False)
 
+
             else:
                 raise Exception("Блок Иначе без Если")
 
+        #Вызов функции, созданной через Функция СоздатьФункцию
         elif j[0] == 'ВызватьФункцию':
             globals()[j[1]](eval(' '.join(j[2:]).strip('()')))
 
