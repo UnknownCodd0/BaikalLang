@@ -69,6 +69,9 @@ def Check_Spisok(arglist) -> list:
         temp1.append(eval(arglist[(arglist.find('.добавить(') + 10):-1]))
         return temp1
 
+    if '.срезы(' in arglist and arglist.find('.срезы(') > arglist.find(']'):
+        return eval(arglist[0:arglist.find('.срезы(')])[eval(arglist[arglist.index('('):])[0]:eval(arglist[arglist.index('('):])[1]]
+
 #Функция func. Необходима для избежания лишних if-else в функциях Если, ДляКаждого, Пока
 def func(j, called_from_var):
     if called_from_var:
@@ -134,7 +137,7 @@ def func(j, called_from_var):
                         print("Ложь")
 
                 elif globals()[j[2].strip('()')] == None:
-                    print("Ничто")
+                    print("Ничего")
                 else:
                     try:
                         print(globals()[j[2].strip('()')].value)
