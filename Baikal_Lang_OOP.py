@@ -178,5 +178,3 @@ class ЛогТип:
             return self.factical_value == other.factical_value
 
 
-
-
