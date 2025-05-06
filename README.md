@@ -147,13 +147,13 @@ BaikalLang поддерживает комментарии:
 # Скомпилированный BaikalLang: #
 Ссылка на BaikalLang:
 
-https://file.com.ru/hYJzOA0g3jsvgPw/file
+https://cloud.mail.ru/public/QBHF/esmbt9iRq
 
 (запускаете файл run.bat)
 
 Ссылка на IDE:
 
-https://file.com.ru/0M1WOhwy4cPB6W1/file
+https://cloud.mail.ru/public/bHF6/DxUPsqxSc
 
 Для работы IDE не нужен сам BaikalLang, всё включено внутрь!😎
 
