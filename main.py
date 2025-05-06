@@ -2,24 +2,25 @@
 from Baikal_Lang_OOP import *
 
 
-#Переменная, считывающая входные данные - директорию файла
-inp = input()
+if __name__ == '__main__':
+    #Переменная, считывающая входные данные - директорию файла
+    inp = input()
 
-#Проверка расширения файла
-check = inp.split('.')
-try:
-    if check[1] != 'bkln':
-        raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
+    #Проверка расширения файла
+    check = inp.split('.')
+    try:
+        if check[1] != 'bkln':
+            raise Exception(f"Неправильное расширений файла: .{check[1]}, а должно быть: .bkln")
 
-except Exception:
-    raise Exception("Введена неправильная директория!")
+    except Exception:
+        raise Exception("Введена неправильная директория!")
 
-#Открытие файла, генерация ошибки, если файла не существует
-try:
-    file = open(inp, encoding="UTF-8")
+    #Открытие файла, генерация ошибки, если файла не существует
+    try:
+        file = open(inp, encoding="UTF-8")
 
-except FileNotFoundError:
-    raise Exception("Введена неправильная директория!")
+    except FileNotFoundError:
+        raise Exception("Введена неправильная директория!")
 
 check_elif_else = False #Переменная, необходимая для обработки elif/else
 if_should_continue = False #Переменная, помогающая указать значение check_elif_else
@@ -73,7 +74,8 @@ def Check_Spisok(arglist) -> list:
         return eval(arglist[0:arglist.find('.срезы(')])[eval(arglist[arglist.index('('):])[0]:eval(arglist[arglist.index('('):])[1]]
 
 #Функция func. Необходима для избежания лишних if-else в функциях Если, ДляКаждого, Пока
-def func(j, called_from_var):
+
+def func(j, called_from_var, i):
     if called_from_var:
 
         #Функция Вид (но не метакласс!)
@@ -203,7 +205,7 @@ def func(j, called_from_var):
                         if newln[0] == 'Функция':
                             newln[2] = newln[2].strip(',')
 
-                            func(newln, False)
+                            func(newln, False, i)
 
                         elif newln[0] == j[2]:
                             # print("bombar", newln)
@@ -240,7 +242,7 @@ def func(j, called_from_var):
                 for kj in newln1:
                     kj = kj.split()
                     if 'Функция' in kj:
-                        func(kj, False)
+                        func(kj, False, i)
 
                     elif 'Строка' in kj:
                         pass
@@ -250,8 +252,7 @@ def func(j, called_from_var):
 
         # Цикл ДляКаждого
         elif j[1] == 'ДляКаждого':
-            print("j2", j[2][0])
-            for nest in range(int(j[2][2:]), int(j[3])):
+            for nest in range(int(j[2][1:]), int(j[3][0])):
                 globals()[j[2][0]] = i
                 a = ' '.join(j[4:]).strip('[]')
                 # print(a.split(', '))
@@ -271,151 +272,111 @@ def func(j, called_from_var):
                     newln = newln.split()
 
                     if newln[0] == 'Функция':
-                        func(newln, False)
+                        func(newln, False, i)
 
         #Функция Ввод
         elif j[1] == "Ввод":
             input()
 
 #----ЧТЕНИЕ ФАЙЛА
-for i in file:
-    #ПРОВЕРКА НА ПУСТОТУ СТРОКИ
-    if i != '\n':
-        #Деление строки файла на токены по пробелам
-        j = i.split()
+def main_body(file):
+    for i in file:
+        #ПРОВЕРКА НА ПУСТОТУ СТРОКИ
+        if i != '\n':
+            #Деление строки файла на токены по пробелам
+            j = i.split()
 
-        #Проверка на if/elif/else
-        if check_elif_else and not iselif:
-            since_last_if += 1
+            check_elif_else = globals()["check_elif_else"]
+            since_last_if = globals()["since_last_if"]
+            iselif = globals()["iselif"]
+            since_last_if = globals()['since_last_if']
 
-        #Проверка на if/elif/else
-        if j[0] != "Если" and j[0] != "Или" and j[0] != "Иначе":
-            if since_last_if == 1:
-                check_elif_else = False
-                if_should_continue = False
-                since_last_if = 0
-                raise Exception("Неправильный синтаксис. Вы ввели другой код между блоками Если-Или-Иначе")
+            #Проверка на if/elif/else
+            if check_elif_else and not iselif:
+                since_last_if += 1
 
-        #Удаление Комментариев из кода
-        for k in j:
-            if '#' in k:
-                del j[j.index(k):]
-
-        #Объявление переменной типа Строка
-        if j[0] == 'Строка':
-            declaration = ' '.join(j[2:])
-
-            temp = Check_Stroka(declaration)
-
-            if temp != None:
-                globals()[j[1]] = Строка(j[1], temp)
-
-            else:
-                globals()[j[1]] = Строка(j[1], eval(declaration))
-            j = []
-
-
-        #Объявление переменной типа Число
-        elif j[0] == 'Число':
-
-            temp = Check_Stroka(j[2])
-
-            if temp != None:
-                globals()[j[1]] = temp
-
-            else:
-                globals()[j[1]] = Число(j[1], eval((j[2])))
-            j = []
-
-        #Объявление переменной типа Список
-        elif j[0] == 'Список':
-            idk = ' '.join(j[2:])
-
-            temp = Check_Spisok(idk)
-
-            if temp != None:
-                globals()[j[1]] = temp
-
-            else:
-                globals()[j[1]] = Список(j[1], eval(' '.join(j[2:])))
-
-        #Объявление переменной типа ЛогТип (bool)
-        elif j[0] == 'ЛогТип':
-            globals()[j[1]] = ЛогТип(j[1], j[2])
-
-        #Объявление переменной, имеющий значения результата Функции
-        elif j[0] == 'ОбъявитьДругое':
-            if j[2] == 'Функция':
-                globals()[j[1]] = func(j[2:], True)
-
-            elif j[2] == 'Ничего':
-                globals()[j[1]] = None
-
-        # Перезапись переменной, возможность совершить с ней действия типа <a = a + 1>
-        elif j[0] == 'Переменная':
-            globals()[j[1]] = eval(j[2])
-
-        #Выполнение функции
-        elif j[0] == 'Функция':
-            #Вызов функции func
-            func(j, False)
-
-        #Оператор Если
-        elif j[0] == 'Если':
-
-            #Проверка условия в скобках
-            if eval(j[1].strip('()')):
-                #Обозначает, стоит ли выполнять последующие циклы elif/else
-                if_should_continue = False
-                a = ' '.join(j[2:]).strip('[]')
-
-                #Перебор значений и вызов указаных функций
-                for l in a.strip(']').split(', '):
-                    l = l.strip('[]')
-                    l = l.strip('()')
-
-                    newln = []
-
-                    for tmp in l:
-                        if not tmp in ['[', ']', '(', ')']:
-                            newln.append(l[l.find(tmp)])
-
-                    newln = ''.join(newln)
-                    newln = newln.split()
-
-                    if newln[0] == 'Функция':
-                        func(newln, False)
-
-            else:
-                if_should_continue = True
-
-            if if_should_continue:
-                check_elif_else = True
-
-            else:
-                check_elif_else = False
-                since_last_if = 0
-
-            # Если в строке кода имеется ;Конец, то следующие if/else не перебираются
-            if ';Конец' in j:
-                if_should_continue = False
-                check_elif_else = False
-                since_last_if = 0
-
-        #Оператор ИЛИ (elif)
-        elif j[0] == 'Или':
-            if check_elif_else:
-                # Проверка условия в скобках
-                if eval(j[1].strip('()')):
-                    # Обозначает, стоит ли выполнять последующие циклы elif/else
+            #Проверка на if/elif/else
+            if j[0] != "Если" and j[0] != "Или" and j[0] != "Иначе":
+                if since_last_if == 1:
                     check_elif_else = False
                     if_should_continue = False
-                    iselif = False
                     since_last_if = 0
+                    raise Exception("Неправильный синтаксис. Вы ввели другой код между блоками Если-Или-Иначе")
 
+            #Удаление Комментариев из кода
+            for k in j:
+                if '#' in k:
+                    del j[j.index(k):]
+
+            #Объявление переменной типа Строка
+            if j[0] == 'Строка':
+                declaration = ' '.join(j[2:])
+
+                temp = Check_Stroka(declaration)
+
+                if temp != None:
+                    globals()[j[1]] = Строка(j[1], temp)
+
+                else:
+                    globals()[j[1]] = Строка(j[1], eval(declaration))
+                j = []
+
+
+            #Объявление переменной типа Число
+            elif j[0] == 'Число':
+
+                temp = Check_Stroka(j[2])
+
+                if temp != None:
+                    globals()[j[1]] = temp
+
+                else:
+                    globals()[j[1]] = Число(j[1], eval((j[2])))
+                j = []
+
+            #Объявление переменной типа Список
+            elif j[0] == 'Список':
+                idk = ' '.join(j[2:])
+
+                temp = Check_Spisok(idk)
+
+                if temp != None:
+                    globals()[j[1]] = temp
+
+                else:
+                    globals()[j[1]] = Список(j[1], eval(' '.join(j[2:])))
+
+            #Объявление переменной типа ЛогТип (bool)
+            elif j[0] == 'ЛогТип':
+                globals()[j[1]] = ЛогТип(j[1], j[2])
+
+            #Объявление переменной, имеющий значения результата Функции
+            elif j[0] == 'ОбъявитьДругое':
+                if j[2] == 'Функция':
+                    globals()[j[1]] = func(j[2:], True, i)
+
+                elif j[2] == 'Ничего':
+                    globals()[j[1]] = None
+
+            # Перезапись переменной, возможность совершить с ней действия типа <a = a + 1>
+            elif j[0] == 'Переменная':
+                globals()[j[1]] = eval(j[2])
+
+            #Выполнение функции
+            elif j[0] == 'Функция':
+                #Вызов функции func
+                func(j, False, i)
+
+            #Оператор Если
+            elif j[0] == 'Если':
+
+                #Проверка условия в скобках
+                if eval(j[1].strip('()')):
+                    #Обозначает, стоит ли выполнять последующие циклы elif/else
+                    if_should_continue = False
                     a = ' '.join(j[2:]).strip('[]')
 
-                    # Перебор значений и вызов указаных функций
+                    #Перебор значений и вызов указаных функций
                     for l in a.strip(']').split(', '):
                         l = l.strip('[]')
                         l = l.strip('()')
@@ -430,65 +391,111 @@ for i in file:
                         newln = newln.split()
 
                         if newln[0] == 'Функция':
-                            func(newln, False)
+                            func(newln, False, i)
 
                 else:
-                    # Если в строке кода имеется ;Конец, то следующие if/else не перебираются
-                    if ';Конец' in j:
-                        if_should_continue = False
+                    if_should_continue = True
+
+                if if_should_continue:
+                    check_elif_else = True
+
+                else:
+                    check_elif_else = False
+                    since_last_if = 0
+
+                # Если в строке кода имеется ;Конец, то следующие if/else не перебираются
+                if ';Конец' in j:
+                    if_should_continue = False
+                    check_elif_else = False
+                    since_last_if = 0
+
+            #Оператор ИЛИ (elif)
+            elif j[0] == 'Или':
+                if check_elif_else:
+                    # Проверка условия в скобках
+                    if eval(j[1].strip('()')):
+                        # Обозначает, стоит ли выполнять последующие циклы elif/else
                         check_elif_else = False
+                        if_should_continue = False
                         iselif = False
                         since_last_if = 0
 
+                        a = ' '.join(j[2:]).strip('[]')
+
+                        # Перебор значений и вызов указаных функций
+                        for l in a.strip(']').split(', '):
+                            l = l.strip('[]')
+                            l = l.strip('()')
+
+                            newln = []
+
+                            for tmp in l:
+                                if not tmp in ['[', ']', '(', ')']:
+                                    newln.append(l[l.find(tmp)])
+
+                            newln = ''.join(newln)
+                            newln = newln.split()
+
+                            if newln[0] == 'Функция':
+                                func(newln, False, i)
+
                     else:
-                        if_should_continue = True
-                        check_elif_else = True
-                        iselif = True
+                        # Если в строке кода имеется ;Конец, то следующие if/else не перебираются
+                        if ';Конец' in j:
+                            if_should_continue = False
+                            check_elif_else = False
+                            iselif = False
+                            since_last_if = 0
 
+                        else:
+                            if_should_continue = True
+                            check_elif_else = True
+                            iselif = True
+
+                else:
+                    raise Exception("Блок Или без Если")
+
+            #Оператор ИНАЧЕ (else)
+            elif j[0] == "Иначе":
+                if check_elif_else:
+                    # Обозначает, стоит ли выполнять последующие циклы elif/else
+                    check_elif_else = False
+                    if_should_continue = False
+                    iselif = False
+                    since_last_if = 0
+                    a = ' '.join(j[1:]).strip('[]')
+
+                    for l in a.strip(']').split(', '):
+                        l = l.strip('[]')
+                        l = l.strip('()')
+
+                        newln = []
+
+                        for tmp in l:
+                            if not tmp in ['[', ']', '(', ')']:
+                                newln.append(l[l.find(tmp)])
+
+                        newln = ''.join(newln)
+                        newln = newln.split()
+
+                        if newln[0] == 'Функция':
+                            func(newln, False, i)
+
+                #Генерация ошибки, если использован блок Иначе без Если
+                else:
+                    raise Exception("Блок Иначе без Если")
+
+            #Вызов функции, созданной через Функция СоздатьФункцию
+            elif j[0] == 'ВызватьФункцию':
+                globals()[j[1]](eval(' '.join(j[2:]).strip('()')))
+
+
+            #Генерация ошибки, если неправильно введена команда
             else:
-                raise Exception("Блок Или без Если")
+                raise Exception("Неправильно введенная команда")
 
-        #Оператор ИНАЧЕ (else)
-        elif j[0] == "Иначе":
-            if check_elif_else:
-                # Обозначает, стоит ли выполнять последующие циклы elif/else
-                check_elif_else = False
-                if_should_continue = False
-                iselif = False
-                since_last_if = 0
-                a = ' '.join(j[1:]).strip('[]')
-
-                for l in a.strip(']').split(', '):
-                    l = l.strip('[]')
-                    l = l.strip('()')
-
-                    newln = []
-
-                    for tmp in l:
-                        if not tmp in ['[', ']', '(', ')']:
-                            newln.append(l[l.find(tmp)])
-
-                    newln = ''.join(newln)
-                    newln = newln.split()
-
-                    if newln[0] == 'Функция':
-                        func(newln, False)
-
-            #Генерация ошибки, если использован блок Иначе без Если
-            else:
-                raise Exception("Блок Иначе без Если")
-
-        #Вызов функции, созданной через Функция СоздатьФункцию
-        elif j[0] == 'ВызватьФункцию':
-            globals()[j[1]](eval(' '.join(j[2:]).strip('()')))
-
-
-        #Генерация ошибки, если неправильно введена команда
-        else:
-            raise Exception("Неправильно введенная команда")
-
-
-
+if __name__ == "__main__":
+    main_body(file)
+    file.close()
 
 # Закрытие файла (для оптимизации)
-file.close()
