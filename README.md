@@ -149,7 +149,7 @@ BaikalLang поддерживает комментарии:
 
 https://cloud.mail.ru/public/QBHF/esmbt9iRq
 
-(запускаете файл run.bat)
+(запускаете файл hello.bat)
 
 Ссылка на IDE:
 
